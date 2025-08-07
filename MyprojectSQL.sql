@@ -145,10 +145,11 @@ GROUP BY actor_id
 HAVING COUNT(*) > 40;
 
 29
-SELECT f.title, COUNT(i.inventory_id) AS cantidad
+SELECT f.title,
+  COUNT(i.inventory_id) AS cantidad_disponible
 FROM film f
 LEFT JOIN inventory i ON f.film_id = i.film_id
-GROUP BY f.title;
+GROUP BY f.film_id, f.title;
 
 30
 SELECT a.actor_id, a.first_name, a.last_name, COUNT(fa.film_id) AS total_peliculas
@@ -233,7 +234,7 @@ FROM customer c
 LEFT JOIN rental r ON c.customer_id = r.customer_id;
 
 44
-SELECT f.title, c.name
+SELECT f.title, c.name AS category_name
 FROM film f
 CROSS JOIN category c;
 
@@ -394,7 +395,7 @@ WHERE f.release_year = 2006
 GROUP BY c.name;
 
 63
-SELECT s.first_name, s.last_name, st.store_id
+SELECT s.staff_id, s.first_name, s.last_name, st.store_id, st.address
 FROM staff s
 CROSS JOIN store st;
 
