@@ -29,7 +29,8 @@ COUNT(*) AS total
 FROM film GROUP BY rating;
 
 8--Películas ‘PG-13’ o duración > 3h
-FROM film 
+SELECT title
+FROM film
 WHERE rating = 'PG-13' OR length > 180;
 
 9--Varianza del coste de reemplazo 
@@ -168,10 +169,10 @@ LEFT JOIN film_actor fa ON a.actor_id = fa.actor_id
 LEFT JOIN film f ON fa.film_id = f.film_id;
 
 33
-SELECT f.title, r.rental_id
+SELECT f.title, r.rental_id, r.rental_date
 FROM film f
 LEFT JOIN inventory i ON f.film_id = i.film_id
-LEFT JOIN rental r ON i.inventory_id = r.inventory_id>;
+LEFT JOIN rental r ON i.inventory_id = r.inventory_id;
 
 34
 SELECT c.first_name, c.last_name, SUM(p.amount) AS total_gastado
@@ -254,17 +255,21 @@ LEFT JOIN film_actor fa ON a.actor_id = fa.actor_id
 WHERE fa.film_id IS NULL;
 
 47
-SELECT a.first_name, a.last_name, COUNT(fa.film_id) AS cantidad
+SELECT a.first_name, a.last_name, COUNT(fa.film_id) AS total_peliculas
 FROM actor a
 JOIN film_actor fa ON a.actor_id = fa.actor_id
-GROUP BY a.actor_id;
+GROUP BY a.actor_id, a.first_name, a.last_name
+ORDER BY total_peliculas DESC;
 
 48
 CREATE VIEW actor_num_peliculas AS
-SELECT a.first_name, a.last_name, COUNT(fa.film_id) AS cantidad
+SELECT 
+  a.first_name,
+  a.last_name,
+  COUNT(fa.film_id) AS total_peliculas
 FROM actor a
 JOIN film_actor fa ON a.actor_id = fa.actor_id
-GROUP BY a.actor_id;
+GROUP BY a.actor_id, a.first_name, a.last_name;
 
 49
 SELECT customer_id, COUNT(*) AS total_alquileres
